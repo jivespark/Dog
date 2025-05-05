@@ -5,7 +5,7 @@ import adafruit_ssd1306
 from PIL import Image, ImageDraw, ImageFont
 import time
 import RPi.GPIO as GPIO
-
+i=1
 # Set up GPIO mode
 GPIO.setmode(GPIO.BCM)
 
@@ -28,31 +28,54 @@ draw = ImageDraw.Draw(image)
 # Load default font
 font = ImageFont.load_default()
 #import image as frame1
-frame1 = Image.open("IMG_3318.png").convert("1")
+D4 = Image.open("D4.png").convert("1")
+D6 = Image.open("D6.png").convert("1")
+D8 = Image.open("D8.png").convert("1")
+D10 = Image.open("D10.png").convert("1")
+D12 = Image.open("D12.png").convert("1")
+D20 = Image.open("D20.png").convert("1")
 def display_message(message):
     draw.rectangle((0, 0, oled.width, oled.height), outline=0, fill=0)
     draw.text((0, 25), message, font=font, fill=255)
     oled.image(image)
     oled.show()
 
-# Initial display frame1
-display.image(frame1)
+# Initial display D4
+display.image(D4)
 display.show()
 time.sleep(0.2)
 try:
     while True:
-        display.image(frame1)
-        display.show()
-        time.sleep(0.2)
+        if i==1:
+            display.image(D4)
+            display.show()
+            time.sleep(0.2)
+        elif i==2:
+            display.image(D6)
+            display.show()
+            time.sleep(0.2)
+        elif i==3:
+            display.image(D8)
+            display.show()
+            time.sleep(0.2)
+        if i==4:
+            display.image(D10)
+            display.show()
+            time.sleep(0.2)
+        elif i==5:
+            display.image(D12)
+            display.show()
+            time.sleep(0.2)
+        elif i==6:
+            display.image(D20)
+            display.show()
+            time.sleep(0.2)
         if GPIO.input(BUTTON1_PIN) == GPIO.HIGH:
-            display_message("Button 1 pressed")
-            time.sleep(0.2)
+            
         elif GPIO.input(BUTTON2_PIN) == GPIO.HIGH:
-             display_message("Button 2 pressed")
-            time.sleep(0.2)
+            
         else:
-            display_message("Waiting for input...")
-            time.sleep(0.05)
+            time.sleep(0.02)
 
 except KeyboardInterrupt:
     print("Exiting...")
