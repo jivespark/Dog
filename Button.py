@@ -71,9 +71,12 @@ try:
             display.show()
             time.sleep(0.2)
         if GPIO.input(BUTTON1_PIN) == GPIO.HIGH:
-            
+            if i<6:
+                i+=1
+            else:
+                i=1
         elif GPIO.input(BUTTON2_PIN) == GPIO.HIGH:
-            
+            pass
         else:
             time.sleep(0.02)
 
