@@ -14,10 +14,10 @@ BUTTON1_PIN = 17
 BUTTON2_PIN = 27
 
 # Setup buttons with pull-up resistors
-GPIO.setup(BUTTON1_PIN, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-GPIO.setup(BUTTON2_PIN, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+GPIO.setup(BUTTON1_PIN, GPIO.IN)
+    GPIO.setup(BUTTON2_PIN, GPIO.IN)
 
-# Set up I2C and OLED
+#  Set up I2C and OLED
 i2c = busio.I2C(board.SCL, board.SDA)
 oled = adafruit_ssd1306.SSD1306_I2C(128, 64, i2c)
 
@@ -39,13 +39,14 @@ display_message("Waiting for input...")
 
 try:
     while True:
-        if GPIO.input(BUTTON1_PIN) == GPIO.LOW:
+        if GPIO.input(BUTTON1_PIN) == GPIO.HIGH:
             display_message("Button 1 pressed")
             time.sleep(0.2)
-        elif GPIO.input(BUTTON2_PIN) == GPIO.LOW:
-            display_message("Button 2 pressed")
+        elif GPIO.input(BUTTON2_PIN) == GPIO.HIGH:
+             display_message("Button 2 pressed")
             time.sleep(0.2)
         else:
+            display_message("Waiting for input...")
             time.sleep(0.05)
 
 except KeyboardInterrupt:
