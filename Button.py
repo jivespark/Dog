@@ -5,7 +5,7 @@ import adafruit_ssd1306
 from PIL import Image, ImageDraw, ImageFont
 import time
 import RPi.GPIO as GPIO
-i=1
+
 # Set up GPIO mode
 GPIO.setmode(GPIO.BCM)
 
@@ -14,71 +14,44 @@ BUTTON1_PIN = 17
 BUTTON2_PIN = 27
 
 # Setup buttons with pull-up resistors
-GPIO.setup(BUTTON1_PIN, GPIO.IN)
-    GPIO.setup(BUTTON2_PIN, GPIO.IN)
+GPIO.setup(BUTTON1_PIN, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+GPIO.setup(BUTTON2_PIN, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
-#  Set up I2C and OLED
+# Set up I2C and OLED
 i2c = busio.I2C(board.SCL, board.SDA)
 oled = adafruit_ssd1306.SSD1306_I2C(128, 64, i2c)
 
-# Create blank image for drawing
-image = Image.new("1", (oled.width, oled.height))
-draw = ImageDraw.Draw(image)
-
-# Load default font
-font = ImageFont.load_default()
-#import image as frame1
+# Load dice images
 D4 = Image.open("D4.png").convert("1")
 D6 = Image.open("D6.png").convert("1")
 D8 = Image.open("D8.png").convert("1")
 D10 = Image.open("D10.png").convert("1")
 D12 = Image.open("D12.png").convert("1")
 D20 = Image.open("D20.png").convert("1")
-def display_message(message):
-    draw.rectangle((0, 0, oled.width, oled.height), outline=0, fill=0)
-    draw.text((0, 25), message, font=font, fill=255)
-    oled.image(image)
-    oled.show()
 
-# Initial display D4
-display.image(D4)
-display.show()
-time.sleep(0.2)
+# List of dice images
+dice_images = [D4, D6, D8, D10, D12, D20]
+
+# Initial state
+i = 0
+
 try:
     while True:
-        if i==1:
-            display.image(D4)
-            display.show()
-            time.sleep(0.2)
-        elif i==2:
-            display.image(D6)
-            display.show()
-            time.sleep(0.2)
-        elif i==3:
-            display.image(D8)
-            display.show()
-            time.sleep(0.2)
-        if i==4:
-            display.image(D10)
-            display.show()
-            time.sleep(0.2)
-        elif i==5:
-            display.image(D12)
-            display.show()
-            time.sleep(0.2)
-        elif i==6:
-            display.image(D20)
-            display.show()
-            time.sleep(0.2)
-        if GPIO.input(BUTTON1_PIN) == GPIO.HIGH:
-            if i<6:
-                i+=1
-            else:
-                i=1
-        elif GPIO.input(BUTTON2_PIN) == GPIO.HIGH:
-            pass
-        else:
-            time.sleep(0.02)
+        # Show current die image
+        oled.image(dice_images[i])
+        oled.show()
+
+        # Button 1 (next die)
+        if GPIO.input(BUTTON1_PIN) == GPIO.LOW:
+            i = (i + 1) % len(dice_images)
+            time.sleep(0.3)
+
+        # Button 2 (previous die)
+        elif GPIO.input(BUTTON2_PIN) == GPIO.LOW:
+            i = (i - 1) % len(dice_images)
+            time.sleep(0.3)
+
+        time.sleep(0.02)
 
 except KeyboardInterrupt:
     print("Exiting...")
