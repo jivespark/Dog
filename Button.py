@@ -35,11 +35,15 @@ def display_message(message):
     oled.image(image)
     oled.show()
 
-# Initial 
-
+# Initial display frame1
+display.image(frame1)
+display.show()
+time.sleep(0.2)
 try:
     while True:
-        
+        display.image(frame1)
+        display.show()
+        time.sleep(0.2)
         if GPIO.input(BUTTON1_PIN) == GPIO.HIGH:
             display_message("Button 1 pressed")
             time.sleep(0.2)
