@@ -27,18 +27,19 @@ draw = ImageDraw.Draw(image)
 
 # Load default font
 font = ImageFont.load_default()
-
+#import image as frame1
+frame1 = Image.open("IMG_3318.png").convert("1")
 def display_message(message):
     draw.rectangle((0, 0, oled.width, oled.height), outline=0, fill=0)
     draw.text((0, 25), message, font=font, fill=255)
     oled.image(image)
     oled.show()
 
-# Initial screen
-display_message("Waiting for input...")
+# Initial 
 
 try:
     while True:
+        
         if GPIO.input(BUTTON1_PIN) == GPIO.HIGH:
             display_message("Button 1 pressed")
             time.sleep(0.2)
