@@ -18,7 +18,7 @@ display.fill(0)
 display.show()
 
 # Load image
-image = Image.open(".png").convert("1")  # Convert to 1-bit monochrome
+image = Image.open("IMG_3372.png").convert("1")  # Convert to 1-bit monochrome
 
 # Resize image to fit the display
 image = image.resize((WIDTH, HEIGHT))
